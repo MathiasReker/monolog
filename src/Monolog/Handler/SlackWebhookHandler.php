@@ -57,7 +57,7 @@ class SlackWebhookHandler extends AbstractProcessingHandler
         bool $bubble = true,
         array $excludeFields = []
     ) {
-        if (!extension_loaded('curl')) {
+        if (!\extension_loaded('curl')) {
             throw new MissingExtensionException('The curl extension is needed to use the SlackWebhookHandler');
         }
 
@@ -102,7 +102,7 @@ class SlackWebhookHandler extends AbstractProcessingHandler
             CURLOPT_HTTPHEADER => ['Content-type: application/json'],
             CURLOPT_POSTFIELDS => $postString,
         ];
-        if (defined('CURLOPT_SAFE_UPLOAD')) {
+        if (\defined('CURLOPT_SAFE_UPLOAD')) {
             $options[CURLOPT_SAFE_UPLOAD] = true;
         }
 

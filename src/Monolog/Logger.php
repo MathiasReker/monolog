@@ -307,7 +307,7 @@ class Logger implements LoggerInterface, ResettableInterface
         }
 
         try {
-            $recordInitialized = count($this->processors) === 0;
+            $recordInitialized = \count($this->processors) === 0;
 
             $record = new LogRecord(
                 message: $message,
@@ -433,7 +433,7 @@ class Logger implements LoggerInterface, ResettableInterface
         }
 
         if (\is_string($level)) {
-            if (\is_numeric($level)) {
+            if (is_numeric($level)) {
                 $levelEnum = Level::tryFrom((int) $level);
                 if ($levelEnum === null) {
                     throw new InvalidArgumentException('Level "'.$level.'" is not defined, use one of: '.implode(', ', Level::NAMES + Level::VALUES));
@@ -445,8 +445,8 @@ class Logger implements LoggerInterface, ResettableInterface
             // Contains first char of all log levels and avoids using strtoupper() which may have
             // strange results depending on locale (for example, "i" will become "İ" in Turkish locale)
             $upper = strtr(substr($level, 0, 1), 'dinweca', 'DINWECA') . strtolower(substr($level, 1));
-            if (defined(Level::class.'::'.$upper)) {
-                return constant(Level::class . '::' . $upper);
+            if (\defined(Level::class.'::'.$upper)) {
+                return \constant(Level::class . '::' . $upper);
             }
 
             throw new InvalidArgumentException('Level "'.$level.'" is not defined, use one of: '.implode(', ', Level::NAMES + Level::VALUES));
@@ -513,7 +513,7 @@ class Logger implements LoggerInterface, ResettableInterface
      */
     public function log($level, string|\Stringable $message, array $context = []): void
     {
-        if (!is_string($level) && !is_int($level) && !$level instanceof Level) {
+        if (!\is_string($level) && !\is_int($level) && !$level instanceof Level) {
             throw new \InvalidArgumentException('$level is expected to be a string, int or '.Level::class.' instance');
         }
 

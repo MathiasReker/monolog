@@ -106,7 +106,7 @@ class TelegramBotHandler extends AbstractProcessingHandler
         bool   $splitLongMessages = false,
         bool   $delayBetweenMessages = false
     ) {
-        if (!extension_loaded('curl')) {
+        if (!\extension_loaded('curl')) {
             throw new MissingExtensionException('The curl extension is needed to use the TelegramBotHandler');
         }
 
@@ -123,7 +123,7 @@ class TelegramBotHandler extends AbstractProcessingHandler
 
     public function setParseMode(string $parseMode = null): self
     {
-        if ($parseMode !== null && !in_array($parseMode, self::AVAILABLE_PARSE_MODES, true)) {
+        if ($parseMode !== null && !\in_array($parseMode, self::AVAILABLE_PARSE_MODES, true)) {
             throw new \InvalidArgumentException('Unknown parseMode, use one of these: ' . implode(', ', self::AVAILABLE_PARSE_MODES) . '.');
         }
 
@@ -233,7 +233,7 @@ class TelegramBotHandler extends AbstractProcessingHandler
         ]));
 
         $result = Curl\Util::execute($ch);
-        if (!is_string($result)) {
+        if (!\is_string($result)) {
             throw new RuntimeException('Telegram API error. Description: No response');
         }
         $result = json_decode($result, true);
@@ -250,8 +250,8 @@ class TelegramBotHandler extends AbstractProcessingHandler
     private function handleMessageLength(string $message): array
     {
         $truncatedMarker = ' (...truncated)';
-        if (!$this->splitLongMessages && strlen($message) > self::MAX_MESSAGE_LENGTH) {
-            return [Utils::substr($message, 0, self::MAX_MESSAGE_LENGTH - strlen($truncatedMarker)) . $truncatedMarker];
+        if (!$this->splitLongMessages && \strlen($message) > self::MAX_MESSAGE_LENGTH) {
+            return [Utils::substr($message, 0, self::MAX_MESSAGE_LENGTH - \strlen($truncatedMarker)) . $truncatedMarker];
         }
 
         return str_split($message, self::MAX_MESSAGE_LENGTH);

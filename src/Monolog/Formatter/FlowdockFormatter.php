@@ -85,7 +85,7 @@ class FlowdockFormatter implements FormatterInterface
         static $hasMbString;
 
         if (null === $hasMbString) {
-            $hasMbString = function_exists('mb_strlen');
+            $hasMbString = \function_exists('mb_strlen');
         }
 
         $maxLength = 45;
@@ -95,7 +95,7 @@ class FlowdockFormatter implements FormatterInterface
                 $message = mb_substr($message, 0, $maxLength - 4, 'UTF-8') . ' ...';
             }
         } else {
-            if (strlen($message) > $maxLength) {
+            if (\strlen($message) > $maxLength) {
                 $message = substr($message, 0, $maxLength - 4) . ' ...';
             }
         }
